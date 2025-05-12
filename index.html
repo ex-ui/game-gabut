@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jumpscare Game 😈</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    h1, h2 {
+      margin-bottom: 10px;
+    }
+
+    #scoreBoard {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+
+    .box-container {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+    }
+
+    .box {
+      width: 150px;
+      height: 150px;
+      background: #000;
+      border: 2px solid white;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    .box:hover {
+      transform: scale(1.05);
+    }
+
+    #jumpscare {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    #jumpscare img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    #retry-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: red;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+  </style>
+</head>
+<body>
+
+<h1>Tebak Kotak Hitam 😈</h1>
+<div id="scoreBoard">
+  Skor: <span id="score">0</span> | High Score: <span id="highScore">0</span>
+</div>
+
+<div class="box-container">
+  <div class="box" onclick="checkAnswer(0)"></div>
+  <div class="box" onclick="checkAnswer(1)"></div>
+</div>
+
+<!-- JUMPSCARE -->
+<div id="jumpscare">
+  <img src="https://raw.githubusercontent.com/mrhsptr/hosted-assets/main/jumpscare.png" alt="Jumpscare">
+  <h2 style="color: red;">DORRRRRR!!! 💀</h2>
+  <button id="retry-btn" onclick="restartGame()">Main Lagi</button>
+</div>
+
+<audio id="sfx" src="https://www.myinstants.com/media/sounds/windows-error.mp3"></audio>
+
+<script>
+  let score = 0;
+  let highScore = localStorage.getItem("highScore") || 0;
+  document.getElementById("highScore").textContent = highScore;
+
+  let correctBox = Math.floor(Math.random() * 2);
+
+  function checkAnswer(clickedBox) {
+    if (clickedBox === correctBox) {
+      score++;
+      document.getElementById("score").textContent = score;
+
+      // Update high score
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", highScore);
+        document.getElementById("highScore").textContent = highScore;
+      }
+
+      correctBox = Math.floor(Math.random() * 2); // Set ulang
+    } else {
+      // JUMPSCARE!
+      document.getElementById("jumpscare").style.display = "flex";
+      document.getElementById("sfx").play();
+    }
+  }
+
+  function restartGame() {
+    score = 0;
+    document.getElementById("score").textContent = score;
+    document.getElementById("jumpscare").style.display = "none";
+    correctBox = Math.floor(Math.random() * 2);
+    document.body.style.background = "#111";
+  }
+</script>
+
+</body>
+</html>
 
